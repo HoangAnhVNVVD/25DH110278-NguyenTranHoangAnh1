@@ -1,0 +1,29 @@
+﻿@model _25DH110278_NguyenTranHoangAnh.Models.ViewModel.PersonalMenuVM
+
+<ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+    <li class="nav-item">
+        <a class="nav-link" href="@Url.Action("Index", "Cart")">
+            Giỏ hàng <span class="badge bg-danger">@(Model != null ? Model.CartCount : 0)</span>
+        </a>
+    </li>
+
+    @if (Model != null && Model.IsLoggedIn)
+    {
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarUserDropdown" role="button" data-bs-toggle="dropdown" data-toggle="dropdown" aria-expanded="false">
+                Xin chào, @Model.Username
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarUserDropdown">
+                <li>@Html.ActionLink("Thông tin tài khoản", "ProfileInfo", "Account", null, new { @class = "dropdown-item" })</li>
+                <li>@Html.ActionLink("Lịch sử mua hàng", "MyOrder", "Order", null, new { @class = "dropdown-item" })</li>
+                <li><hr class="dropdown-divider"></li>
+                <li>@Html.ActionLink("Đăng xuất", "Logout", "Account", null, new { @class = "dropdown-item" })</li>
+            </ul>
+        </li>
+    }
+    else
+    {
+        <li class="nav-item">@Html.ActionLink("Đăng ký", "Register", "Account", null, new { @class = "nav-link" })</li>
+        <li class="nav-item">@Html.ActionLink("Đăng nhập", "Login", "Account", null, new { @class = "nav-link" })</li>
+    }
+</ul>

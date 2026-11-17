@@ -1,0 +1,8 @@
+﻿@model _25DH110278_NguyenTranHoangAnh.Models.ViewModel.ProductDetailsVM
+
+@{
+    ViewBag.Title = Model.product.ProductName;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@Html.Partial("ProductDetails", Model)

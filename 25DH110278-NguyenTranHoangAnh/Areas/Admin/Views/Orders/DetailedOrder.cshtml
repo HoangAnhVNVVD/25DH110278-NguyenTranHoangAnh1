@@ -1,0 +1,87 @@
+﻿@model _25DH110278_NguyenTranHoangAnh.Models.Order
+
+@{
+    ViewBag.Title = "Chi tiết đơn hàng";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h2 style="margin-top: 20px; margin-bottom: 25px; font-weight: bold;">CHI TIẾT ĐƠN HÀNG</h2>
+
+<div class="row">
+    <div class="col-md-5">
+        <h4 style="font-weight: bold; margin-bottom: 20px;">THÔNG TIN ĐƠN HÀNG</h4>
+        <table class="table table-borderless" style="font-size: 15px;">
+            <tr>
+                <td style="font-weight: bold; width: 45%;">Ngày đặt hàng</td>
+                <td>@Model.OrderDate.ToString("dd/MM/yyyy HH:mm:ss")</td>
+            </tr>
+            <tr>
+                <td style="font-weight: bold;">Tên khách hàng</td>
+                <td>@(Model.Customer != null ? Model.Customer.CustomerName : "")</td>
+            </tr>
+            <tr>
+                <td style="font-weight: bold;">Tổng giá trị</td>
+                <td style="font-weight: bold; color: #d9534f;">@Model.TotalAmount.ToString("N0") đ</td>
+            </tr>
+            <tr>
+                <td style="font-weight: bold;">Phương thức thanh toán</td>
+                <td>@(string.IsNullOrEmpty(Model.PaymentMethod) ? "Chưa xác định" : Model.PaymentMethod)</td>
+            </tr>
+            <tr>
+                <td style="font-weight: bold;">Trạng thái thanh toán</td>
+                <td><span class="label label-info">@Model.PaymentStatus</span></td>
+            </tr>
+            <tr>
+                <td style="font-weight: bold;">Phương thức giao hàng</td>
+                <td>@(string.IsNullOrEmpty(Model.DeliveryMethod) ? "Giao hàng tiêu chuẩn" : Model.DeliveryMethod)</td>
+            </tr>
+            <tr>
+                <td style="font-weight: bold;">Địa chỉ giao hàng</td>
+                <td>@(string.IsNullOrEmpty(Model.ShippingAddress) ? Model.AddressDelivery : Model.ShippingAddress)</td>
+            </tr>
+        </table>
+
+        <div style="margin-top: 30px;">
+            @Html.ActionLink("Cập nhật trạng thái", "UpdateStatus", new { id = Model.OrderID }, new { @class = "btn btn-primary" })
+            @Html.ActionLink("Quay lại danh sách", "Index", null, new { @class = "btn btn-default" })
+        </div>
+    </div>
+
+    <div class="col-md-7">
+        <table class="table" style="background-color: #ffffff; border-top: 1px solid #ddd;">
+            <thead>
+                <tr>
+                    <th colspan="2">Sản phẩm</th>
+                    <th class="text-center">Số lượng</th>
+                    <th class="text-right">Đơn giá</th>
+                    <th class="text-right">Thành tiền</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.OrderDetails)
+                {
+                    <tr>
+                        <td style="width: 100px;">
+                            @if (item.Product != null && !string.IsNullOrEmpty(item.Product.ProductImage))
+                            {
+                                <img src="@Url.Content(item.Product.ProductImage)" alt="@item.Product.ProductName" style="max-height: 100px; max-width: 80px; object-fit: contain;" />
+                            }
+                        </td>
+                        <td>
+                            <strong>@(item.Product != null ? item.Product.ProductName : "")</strong>
+                        </td>
+                        <td class="text-center" style="vertical-align: middle;">
+                            @item.Quantity
+                        </td>
+                        <td class="text-right" style="vertical-align: middle;">
+                            @item.UnitPrice.ToString("N0") đ
+                        </td>
+                        <td class="text-right" style="vertical-align: middle; font-weight: bold;">
+                            @((item.Quantity * item.UnitPrice).ToString("N0")) đ
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

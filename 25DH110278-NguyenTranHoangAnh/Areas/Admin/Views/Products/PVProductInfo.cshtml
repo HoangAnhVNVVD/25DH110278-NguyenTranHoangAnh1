@@ -1,0 +1,30 @@
+﻿@model _25DH110278_NguyenTranHoangAnh.Models.Product
+
+<div class="row" style="margin-top: 15px;">
+    <div class="col-md-5">
+        <div style="padding: 10px; border: 1px solid #ddd; background: #fff; text-align: center;">
+            @if (!string.IsNullOrEmpty(Model.ProductImage))
+            {
+                <img src="@Url.Content(Model.ProductImage)" alt="@Model.ProductName" style="max-height: 250px; max-width: 100%; object-fit: contain;" />
+            }
+        </div>
+    </div>
+    <div class="col-md-7">
+        <dl class="dl-horizontal" style="font-size: 15px;">
+            <dt>Tên sản phẩm</dt>
+            <dd><strong>@Html.DisplayFor(model => model.ProductName)</strong></dd>
+
+            <dt>Mô tả</dt>
+            <dd>@Html.DisplayFor(model => model.ProductDecription)</dd>
+
+            <dt>Đơn giá</dt>
+            <dd style="color: #d9534f; font-weight: bold;">@Model.ProductPrice.ToString("N0") đ</dd>
+
+            <dt>Danh mục</dt>
+            <dd>@Html.DisplayFor(model => model.Category.CategoryName)</dd>
+
+            <dt>Số lượng tồn kho</dt>
+            <dd><span class="badge" style="background-color: #337ab7;">@Model.Quantity</span></dd>
+        </dl>
+    </div>
+</div>

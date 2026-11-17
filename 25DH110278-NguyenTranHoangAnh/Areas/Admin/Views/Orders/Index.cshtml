@@ -1,0 +1,82 @@
+﻿@model PagedList.IPagedList<_25DH110278_NguyenTranHoangAnh.Models.Order>
+@using PagedList.Mvc;
+
+@{
+    ViewBag.Title = "Danh sách đơn hàng";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="well" style="background-color: #ffffff; margin-top: 15px; border: 1px solid #e3e3e3;">
+    @using (Html.BeginForm("Index", "Orders", FormMethod.Get, new { @class = "form-inline" }))
+    {
+        <div class="row">
+            <div class="col-md-3">
+                <div class="form-group" style="width: 100%;">
+                    <label style="display: block;">Tên khách hàng</label>
+                    @Html.TextBox("customerName", ViewBag.CustomerName as string, new { @class = "form-control", @style = "width: 100%;" })
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group" style="width: 100%;">
+                    <label style="display: block;">Trạng thái thanh toán</label>
+                    @Html.DropDownList("paymentStatus", ViewBag.PaymentStatusList as SelectList, "-- Tất cả trạng thái --", new { @class = "form-control", @style = "width: 100%;" })
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group" style="width: 100%;">
+                    <label style="display: block;">Ngày đặt hàng</label>
+                    <input type="date" name="orderDate" value="@ViewBag.OrderDate" class="form-control" style="width: 100%;" />
+                </div>
+            </div>
+            <div class="col-md-3" style="padding-top: 25px;">
+                <button type="submit" class="btn btn-primary" style="padding: 6px 25px;">Tìm kiếm</button>
+                <a href="@Url.Action("Index", "Orders")" class="btn btn-default">Làm mới</a>
+            </div>
+        </div>
+    }
+</div>
+
+<h2 style="background-color: #dff0d8; padding: 10px; border-radius: 4px; color: #3c763d; margin-top: 20px;">DANH SÁCH ĐƠN HÀNG</h2>
+
+@if (Model != null && Model.Any())
+{
+    <table class="table table-bordered table-hover" style="margin-top: 15px; background-color: #ffffff;">
+        <thead style="background-color: #dff0d8;">
+            <tr>
+                <th>Ngày đặt hàng</th>
+                <th>Tên khách hàng</th>
+                <th>Tổng giá trị</th>
+                <th>Trạng thái thanh toán</th>
+                <th>Phương thức giao hàng</th>
+                <th>Thao tác</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.OrderDate.ToString("dd/MM/yyyy HH:mm:ss")</td>
+                    <td>@(item.Customer != null ? item.Customer.CustomerName : "")</td>
+                    <td>@item.TotalAmount.ToString("N0") đ</td>
+                    <td>
+                        <span class="label label-info">@item.PaymentStatus</span>
+                    </td>
+                    <td>@(string.IsNullOrEmpty(item.DeliveryMethod) ? "Giao hàng tiêu chuẩn" : item.DeliveryMethod)</td>
+                    <td>
+                        @Html.ActionLink("Chi tiết đơn hàng", "DetailedOrder", new { id = item.OrderID }, new { @class = "btn btn-info btn-sm" })
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <div class="text-left" style="margin-top: 15px;">
+        @Html.PagedListPager(Model, page => Url.Action("Index", new { page, customerName = ViewBag.CustomerName, paymentStatus = ViewBag.PaymentStatus, orderDate = ViewBag.OrderDate }))
+    </div>
+}
+else
+{
+    <div class="alert alert-warning" style="margin-top: 20px; font-weight: bold; font-size: 16px; text-align: center;">
+        KHÔNG CÓ
+    </div>
+}

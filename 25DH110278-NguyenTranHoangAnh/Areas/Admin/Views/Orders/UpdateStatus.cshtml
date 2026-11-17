@@ -1,0 +1,41 @@
+﻿@model _25DH110278_NguyenTranHoangAnh.Models.Order
+
+@{
+    ViewBag.Title = "Cập nhật trạng thái đơn hàng";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h2 style="margin-top: 20px; margin-bottom: 25px; font-weight: bold;">CẬP NHẬT TRẠNG THÁI ĐƠN HÀNG #@Model.OrderID</h2>
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <strong>Thông tin đơn hàng</strong>
+            </div>
+            <div class="panel-body">
+                <p><strong>Khách hàng:</strong> @(Model.Customer != null ? Model.Customer.CustomerName : "")</p>
+                <p><strong>Ngày đặt:</strong> @Model.OrderDate.ToString("dd/MM/yyyy HH:mm:ss")</p>
+                <p><strong>Tổng tiền:</strong> @Model.TotalAmount.ToString("N0") đ</p>
+                <p><strong>Trạng thái hiện tại:</strong> <span class="label label-info">@Model.PaymentStatus</span></p>
+                <hr />
+                @using (Html.BeginForm("UpdateStatus", "Orders", FormMethod.Post))
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.HiddenFor(model => model.OrderID)
+
+                    <div class="form-group">
+                        <label for="paymentStatus"><strong>Chọn trạng thái mới:</strong></label>
+                        @Html.DropDownList("paymentStatus", ViewBag.PaymentStatusList as SelectList, new { @class = "form-control" })
+                    </div>
+
+                    <div style="margin-top: 20px;">
+                        <button type="submit" class="btn btn-success">Lưu thay đổi</button>
+                        @Html.ActionLink("Quay lại chi tiết", "DetailedOrder", new { id = Model.OrderID }, new { @class = "btn btn-default" })
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+

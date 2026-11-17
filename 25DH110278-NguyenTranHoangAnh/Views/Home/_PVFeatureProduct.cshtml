@@ -1,0 +1,35 @@
+﻿@model IEnumerable<_25DH110278_NguyenTranHoangAnh.Models.Product>
+
+<div class="row mb-3">
+    <div class="col-12">
+        <h3 class="bg-primary text-white p-2 rounded" style="font-size: 20px; font-weight: bold;">SẢN PHẨM NỔI BẬT</h3>
+    </div>
+</div>
+
+<div class="row">
+    @if (Model != null && Model.Any())
+    {
+        foreach (var item in Model)
+        {
+            <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+                <div class="card h-100 text-center p-3 shadow-sm" style="border: 1px solid #e5e5e5; border-radius: 8px; background: #fff;">
+                    <a href="@Url.Action("ProductDetail", "Home", new { id = item.ProductID })" style="height: 190px; display: flex; align-items: center; justify-content: center;">
+                        <img src="@Url.Content(item.ProductImage ?? "~/Content/images/asp-net-mvc.jpg")" alt="@item.ProductName" style="max-height: 180px; max-width: 100%; object-fit: contain;" />
+                    </a>
+                    <div class="card-body p-2 d-flex flex-column justify-content-between">
+                        <h5 style="height: 44px; overflow: hidden; font-size: 14px; font-weight: 600; line-height: 1.4; margin-top: 10px;">
+                            <a href="@Url.Action("ProductDetail", "Home", new { id = item.ProductID })" class="text-decoration-none text-dark">@item.ProductName</a>
+                        </h5>
+                        <p style="color: #d9534f; font-weight: bold; font-size: 16px; margin: 8px 0;">
+                            @item.ProductPrice.ToString("N0") đ
+                        </p>
+                        <div class="d-flex justify-content-center gap-2 mt-auto">
+                            <a href="@Url.Action("AddToCart", "Cart", new { id = item.ProductID, quantity = 1 })" class="btn btn-danger btn-sm">Mua ngay</a>
+                            <a href="@Url.Action("ProductDetail", "Home", new { id = item.ProductID })" class="btn btn-outline-secondary btn-sm">Chi tiết</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    }
+</div>
